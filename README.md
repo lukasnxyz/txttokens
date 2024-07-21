@@ -1,7 +1,7 @@
 ### Byte Pair Encoding Tokenizer
 A simple and minimal implementation of a byte pair encoding tokenizer written in python.
 
-### Quickstart
+### Quick start
 Just
 ```bash
 wget "https://raw.githubusercontent.com/lukasnxyz/txttokens/main/tokens.py"
