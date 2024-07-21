@@ -80,26 +80,3 @@ def tokenize(txt: str, merges: defaultdict):
 
 def detokenize(tkns: list):
     return ''.join(t.replace('Ġ', ' ') for t in tkns)
-
-# example usage
-if __name__ == '__main__':
-    with open('data/truths.txt', 'r', encoding='utf-8') as f: corpus = f.read().split('\n')
-    word_freqs = get_word_freqs(corpus)
-    vocab = get_v(word_freqs)
-    splits = {word: [c for c in word] for word in word_freqs.keys()}
-    splits, vocab, merges = train(splits, vocab, word_freqs, 1000)
-
-    #stoi = f_stoi(vocab)
-    #print(tokenize('hello world', merges))
-    #print(encode(tokenize('hello world', merges), stoi))
-    #print(detokenize(tokenize('hello world', merges)))
-    
-    #with open('data/sample_truths.txt', 'r', encoding='utf-8') as f:
-    #    txt = f.read()
-    #    print(txt)
-    #    print()
-    #    txt_t = tokenize(txt, merges)
-    #    # adding space just for visualization
-    #    txt_t = [' ' + v if v.startswith('Ġ') else v for v in txt_t] 
-    #    txt_t = ''.join(txt_t)
-    #    print(txt_t)
