@@ -5,7 +5,7 @@ from collections import defaultdict
 tokenizer = AutoTokenizer.from_pretrained('gpt2')
 
 f_stoi = lambda s: {p:i for i,p in enumerate(s)}
-f_itos = lambda e: {i:p for i,p in enumerate(e)}
+f_itos = lambda s: {i:p for i,p in enumerate(s)}
 def encode(s: str, stoi: dict):
     return [stoi[c] for c in s]
 def decode(e, itos: dict):
@@ -26,7 +26,7 @@ def get_a_v(word_freqs: defaultdict):
             if letter not in alphabet: alphabet.append(letter)
     return alphabet.sort(), ['<E>'] + alphabet.copy()
 
-def compute_pair_freqs(splits: dict):
+def compute_pair_freqs(splits: dict, word_freqs: defaultdict):
     pair_freqs = defaultdict(int)
     for word, freq in word_freqs.items():
         split = splits[word]
@@ -48,11 +48,11 @@ def merge_pair(a: str, b: str, splits: dict):
         splits[word] = split
     return splits
 
-def train(splits: dict, vocab: list, g_vocab_size: int):
+def train(splits: dict, vocab: list, word_freqs: defaultdict, g_vocab_size: int):
     merges = defaultdict(str)
     while len(vocab) < g_vocab_size:
         print(f'{len(vocab)}/{g_vocab_size}', end='\r', flush=True)
-        pair_freqs = compute_pair_freqs(splits)
+        pair_freqs = compute_pair_freqs(splits, word_freqs)
         best_pair = ''
         max_freq = None
         for pair, freq in pair_freqs.items():
@@ -86,7 +86,7 @@ if __name__ == '__main__':
     word_freqs = get_word_freqs(corpus)
     _, vocab = get_a_v(word_freqs)
     splits = {word: [c for c in word] for word in word_freqs.keys()}
-    splits, vocab, merges = train(splits, vocab, 1000)
+    splits, vocab, merges = train(splits, vocab, word_freqs, 1000)
 
     stoi = f_stoi(vocab)
     print(tokenize('hello world', merges))
