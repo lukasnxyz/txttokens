@@ -19,12 +19,12 @@ def get_word_freqs(corpus: list):
         for word in nw_wrds: word_freqs[word] += 1
     return word_freqs
 
-def get_a_v(word_freqs: defaultdict):
-    alphabet = []
+def get_v(word_freqs: defaultdict):
+    vocab = []
     for word in word_freqs.keys():
-        for letter in word:
-            if letter not in alphabet: alphabet.append(letter)
-    return alphabet.sort(), ['<E>'] + alphabet.copy()
+        for l in word:
+            if l not in vocab: vocab.append(l)
+    return sorted(vocab)
 
 def compute_pair_freqs(splits: dict, word_freqs: defaultdict):
     pair_freqs = defaultdict(int)
@@ -36,7 +36,7 @@ def compute_pair_freqs(splits: dict, word_freqs: defaultdict):
             pair_freqs[pair] += freq
     return pair_freqs
 
-def merge_pair(a: str, b: str, splits: dict):
+def merge_pair(a: str, b: str, splits: dict, word_freqs: defaultdict):
     for word in word_freqs:
         split = splits[word]
         if len(split) == 1: continue
@@ -59,7 +59,7 @@ def train(splits: dict, vocab: list, word_freqs: defaultdict, g_vocab_size: int)
             if max_freq is None or max_freq < freq:
                 best_pair = pair
                 max_freq = freq
-        splits = merge_pair(*best_pair, splits)
+        splits = merge_pair(*best_pair, splits, word_freqs)
         merges[best_pair] = best_pair[0] + best_pair[1]
         vocab.append(best_pair[0] + best_pair[1])
     return splits, vocab, merges
@@ -81,17 +81,18 @@ def tokenize(txt: str, merges: defaultdict):
 def detokenize(tkns: list):
     return ''.join(t.replace('Ġ', ' ') for t in tkns)
 
+# example usage
 if __name__ == '__main__':
     with open('data/truths.txt', 'r', encoding='utf-8') as f: corpus = f.read().split('\n')
     word_freqs = get_word_freqs(corpus)
-    _, vocab = get_a_v(word_freqs)
+    vocab = get_v(word_freqs)
     splits = {word: [c for c in word] for word in word_freqs.keys()}
     splits, vocab, merges = train(splits, vocab, word_freqs, 1000)
 
-    stoi = f_stoi(vocab)
-    print(tokenize('hello world', merges))
-    print(encode(tokenize('hello world', merges), stoi))
-    print(detokenize(tokenize('hello world', merges)))
+    #stoi = f_stoi(vocab)
+    #print(tokenize('hello world', merges))
+    #print(encode(tokenize('hello world', merges), stoi))
+    #print(detokenize(tokenize('hello world', merges)))
     
     #with open('data/sample_truths.txt', 'r', encoding='utf-8') as f:
     #    txt = f.read()
