@@ -2,7 +2,7 @@
 A simple and minimal implementation of a byte pair encoding tokenizer written in python.
 
 ### Quick start
-The only requirement is the huggingface `transformers` library.
+The only requirement is the huggingface `transformers` library and `tqdm`.
 
 Just
 ```bash
