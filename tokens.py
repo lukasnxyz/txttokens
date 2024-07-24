@@ -1,4 +1,3 @@
-# adpated from: https://huggingface.co/learn/nlp-course/en/chapter6/5
 from collections import defaultdict
 
 class AutoChars:
