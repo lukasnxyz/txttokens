@@ -1,11 +1,30 @@
 # adpated from: https://huggingface.co/learn/nlp-course/en/chapter6/5
-from transformers import AutoTokenizer # TODO: implement this custom as well
 from collections import defaultdict
+
+class AutoChars:
+    @staticmethod
+    def pre_tokenize_str(s: str):
+        words = []
+        c_word = ''
+        for l in s:
+            if not l.isalpha():
+                if l == ' ':
+                    if c_word == '': c_word += 'Ġ'
+                    else:
+                        words.append(c_word)
+                        c_word = 'Ġ'
+                elif l == '\n':
+                    if c_word != '': words.append(c_word)
+                    words.append('Ċ')
+                    c_word = ''
+                else: c_word += l
+            else: c_word += l
+        return words
 
 class Tokens:
     def __init__(self, corpus: list, g_vocab_size: int=100):
         self.corpus, self.g_vocab_size = corpus, g_vocab_size
-        self.tokenizer = AutoTokenizer.from_pretrained('gpt2')
+        self.tokenizer = AutoChars
 
         self.word_freqs = self._get_word_freqs()
         self.vocab = sorted(set(c for word in self.word_freqs for c in word))
@@ -21,7 +40,7 @@ class Tokens:
 
     def _get_word_freqs(self):
         word_freqs = defaultdict(int)
-        for word, _ in self.tokenizer.backend_tokenizer.pre_tokenizer.pre_tokenize_str(self.corpus):
+        for word in self.tokenizer.pre_tokenize_str(self.corpus):
             word_freqs[word] += 1
         return word_freqs
 
@@ -54,10 +73,9 @@ class Tokens:
             self.vocab.append(''.join(best_pair))
         return merges
 
-    # TODO: check if str or list of strs
     # TODO: some sort of progress
     def tokenize(self, txt: str):
-        splits = [list(w) for w, _ in self.tokenizer.backend_tokenizer.pre_tokenizer.pre_tokenize_str(txt)]
+        splits = [list(w) for w in self.tokenizer.pre_tokenize_str(txt)]
         for pair, merge in self.merges.items():
             for split in splits:
                 i = 0

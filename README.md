@@ -1,9 +1,7 @@
 ### Byte Pair Encoding Tokenizer
-A simple and minimal implementation of a byte pair encoding tokenizer written in python.
+A simple and minimal implementation of a byte pair encoding text tokenizer written in python.
 
 ### Quick start
-The only requirement is the huggingface `transformers` library and `tqdm`.
-
 Just
 ```bash
 wget "https://raw.githubusercontent.com/lukasnxyz/txttokens/main/tokens.py"
