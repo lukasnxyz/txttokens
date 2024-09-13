@@ -15,3 +15,4 @@ See `example_tokenize.py` for an example on how to setup and tokenize a data set
 - Implement Random-Drop BPE
 - Implement Duplicate BPE
 - (with tests)
+- https://arxiv.org/pdf/2404.17808
