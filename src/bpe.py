@@ -21,7 +21,7 @@ class AutoChars:
         return words
 
 class Tokens:
-    def __init__(self, corpus: list, g_vocab_size: int=100):
+    def __init__(self, corpus: str, g_vocab_size: int=100):
         self.corpus, self.g_vocab_size = corpus, g_vocab_size
         self.tokenizer = AutoChars
 
