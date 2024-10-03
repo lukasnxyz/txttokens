@@ -4,15 +4,8 @@ A simple and minimal implementation of a byte pair encoding text tokenizer writt
 #### Quick start
 Just
 ```bash
-wget "https://raw.githubusercontent.com/lukasnxyz/txttokens/main/tokens.py"
+wget "https://raw.githubusercontent.com/lukasnxyz/txttokens/refs/heads/main/src/bpe.py"
 ```
 into the repo you're working in, it's much easier.
 
 See `example_tokenize.py` for an example on how to setup and tokenize a data set.
-
-#### Todo
-- Fix up BPE to work properly
-- Implement Random-Drop BPE
-- Implement Duplicate BPE
-- (with tests)
-- https://arxiv.org/pdf/2404.17808
